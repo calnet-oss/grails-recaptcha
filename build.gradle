@@ -91,6 +91,9 @@ tasks.withType(GroovyCompile) {
 
 tasks.withType(Test) {
     useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 // enable if you wish to package this plugin as a standalone application
@@ -100,6 +103,20 @@ assets {
     packagePlugin = true
 }
 
+tasks.withType(JavaCompile) {
+    sourceCompatibility = rootProject.sourceCompatibility
+    targetCompatibility = rootProject.targetCompatibility
+}
+tasks.withType(GroovyCompile) {
+    sourceCompatibility = rootProject.sourceCompatibility
+    targetCompatibility = rootProject.targetCompatibility
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allGroovy
+    from sourceSets.main.allJava
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -107,6 +124,16 @@ publishing {
             artifactId project.name
             version project.version
             groupId project.group
+            artifact sourceJar { classifier "sources" }
+        }
+    }
+    repositories {
+        maven {
+            url "${project.property('default_deploy_url')}/${calnet_deploy_grails_plugin_repo}"
+            credentials {
+                username project.property("default_deploy_user")
+                password project.property("default_deploy_password")
+            }
         }
     }
 }
