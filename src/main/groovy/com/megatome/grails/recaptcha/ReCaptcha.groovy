@@ -3,6 +3,7 @@ package com.megatome.grails.recaptcha
 import com.megatome.grails.recaptcha.net.AuthenticatorProxy
 import com.megatome.grails.recaptcha.net.Post
 import com.megatome.grails.recaptcha.net.QueryParams
+import groovy.util.logging.Slf4j
 
 /**
  * Copyright 2010-2018 Megatome Technologies
@@ -22,6 +23,7 @@ import com.megatome.grails.recaptcha.net.QueryParams
  * Based on recaptcha4j
  */
 
+@Slf4j
 class ReCaptcha {
     private static final String BASE_URL = "https://www.google.com/recaptcha/api"
     public static final String VERIFY_URL = "/siteverify"
@@ -176,6 +178,7 @@ class ReCaptcha {
         post.queryParams.add("remoteip", remoteAddr)
 
         def responseObject = post.response
+        log.trace("Received response = $responseObject")
 
         if (!responseObject) {
             return false

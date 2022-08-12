@@ -14,7 +14,7 @@ plugins {
     id 'com.github.kt3k.coveralls' version '2.12.0'
 }
 
-version "5.0.0-SNAPSHOT"
+version "5.0.1-SNAPSHOT"
 group "org.grails.plugins"
 
 apply plugin: 'eclipse'
